@@ -2,7 +2,7 @@ variable "region" {
   default = "eu-west-1"
 }
 variable "bucket_name" {
-  default = "bucket_name"
+  default = "bucketname"
 }
 variable "object_key" {
   default = "docker.zip"
