@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 heroku_git_url=$1
 my_app_url=$2
 my_app_name=$3

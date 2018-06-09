@@ -60,6 +60,7 @@ resource "aws_elastic_beanstalk_environment" "default" {
   version_label = "${aws_elastic_beanstalk_application_version.default.name}"
   solution_stack_name = "${var.solution_stack_name}"
 
+
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name = "InstanceType"

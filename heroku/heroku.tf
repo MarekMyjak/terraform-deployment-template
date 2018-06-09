@@ -8,7 +8,7 @@ resource "heroku_app" "myNewHerokuApp" {
   stack = "heroku-16"
 
   provisioner "local-exec" {
-    command = "./git.sh ${heroku_app.myNewHerokuApp.git_url} https://github.com/heroku/node-js-getting-started.git node-js-getting-started"
+    command = "./deploy.sh ${heroku_app.myNewHerokuApp.git_url} https://github.com/heroku/node-js-getting-started.git node-js-getting-started"
   }
 }
 
