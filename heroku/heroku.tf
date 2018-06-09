@@ -1,6 +1,5 @@
 provider "heroku" {
-  email   = "marek.myjak1221@gmail.com"
-  api_key = "5757b479-54ec-438f-ab2b-f5ad30196193"
+//Heroku API token. It must be provided, but it can also be sourced from the HEROKU_API_KEY environment variable.
 }
 
 resource "heroku_app" "myNewHerokuApp" {

@@ -41,3 +41,22 @@ terraform init
 ```
 cd terraform apply -auto-approve
 ```
+
+## How to run heroku
+<aside class="notice">
+Heroku deploy have to be run on operation system with bash, e.g Linux
+</aside>
+
+0. Set HEROKU_API_KEY environment variables.
+1. Move to heroku directory
+```
+cd ibm
+```
+2. Initialize terraform, this step will download require plugins
+```
+terraform init
+```
+3. Apply changes
+```
+cd terraform apply -auto-approve
+```
