@@ -1,31 +1,6 @@
 variable "region" {
   default = "eu-west-1"
 }
-variable "bucket_name" {
-  default = "bucketname"
-}
-variable "object_key" {
-  default = "docker.zip"
-}
-variable source {
-  default = "../apps/docker.zip"
-}
-variable application_name {
-  default = "terraform_application"
-}
-variable terraform_environment_name {
-  default = "terraform-environment"
-}
-
-variable application_version_name {
-  type = "string"
-  default = "terraform_application_version"
-}
-
-variable solution_stack_name {
-  type = "string"
-  default = "64bit Amazon Linux 2017.09 v2.8.2 running Docker 17.06.2-ce"
-}
 
 provider "aws" {
   //AWS Provider docs: https://www.terraform.io/docs/providers/aws/index.html
@@ -33,43 +8,31 @@ provider "aws" {
   region = "${var.region}"
 }
 
-resource "aws_s3_bucket" "default" {
-  bucket = "${var.bucket_name}"
+module "aws_s3_bucket_object" {
+  source = "modules/aws s3 bucket object"
+
+  bucket_name = "unique-bucket-name-15ed4f4b-50a5-45fb-99d4-2f71885c29b4"
+  object_key = "app"
+  object_source = "../apps/get-started-node.zip"
 }
 
-resource "aws_s3_bucket_object" "default" {
-  bucket = "${aws_s3_bucket.default.bucket}"
-  key = "${var.object_key}"
-  source = "${var.source}"
+module "aws_elastic_beanstalk_application_version" {
+  source = "modules/aws elastic beanstalk application version"
+
+  application_name = "terraform_application"
+  application_version_name = "terraform_application_version"
+  aws_s3_bucket_id = "${module.aws_s3_bucket_object.aws_s3_bucket_id}"
+  aws_s3_bucket_object_id = "${module.aws_s3_bucket_object.aws_s3_bucket_object_id}"
 }
 
-resource "aws_elastic_beanstalk_application" "default" {
-  name = "${var.application_name}"
+module "aws_elastic_beanstalk_environment" {
+  source = "modules/aws elastic beanstalk environment"
+
+  aws_elastic_beanstalk_application_name = "${module.aws_elastic_beanstalk_application_version.aws_elastic_beanstalk_application_name}"
+  aws_elastic_beanstalk_application_version_name = "${module.aws_elastic_beanstalk_application_version.aws_elastic_beanstalk_application_version_name}"
+  terraform_environment_name = "env-name"
 }
 
-resource "aws_elastic_beanstalk_application_version" "default" {
-  application = "${aws_elastic_beanstalk_application.default.name}"
-  bucket = "${aws_s3_bucket.default.id}"
-  key = "${aws_s3_bucket_object.default.id}"
-  name = "${var.application_version_name}"
-}
-
-resource "aws_elastic_beanstalk_environment" "default" {
-  name = "${var.terraform_environment_name}"
-  application = "${aws_elastic_beanstalk_application.default.name}"
-  version_label = "${aws_elastic_beanstalk_application_version.default.name}"
-  solution_stack_name = "${var.solution_stack_name}"
-
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name = "InstanceType"
-    value = "t2.micro"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name = "EnvironmentType"
-    value = "SingleInstance"
-  }
+output "url" {
+  value = "${module.aws_elastic_beanstalk_environment.aws_elastic_beanstalk_environment_url}"
 }
