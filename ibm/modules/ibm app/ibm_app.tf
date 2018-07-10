@@ -61,3 +61,7 @@ resource "ibm_app" "app" {
 output "url" {
   value = "${ibm_app_route.route.host}.${data.ibm_app_domain_shared.domain.name}"
 }
+
+output "id" {
+  value = "${ibm_app.app.id}"
+}

@@ -14,3 +14,7 @@ module "ibm_app" {
 output "url" {
   value = "${module.ibm_app.url}"
 }
+
+output "id" {
+  value = "${module.ibm_app.id}"
+}
