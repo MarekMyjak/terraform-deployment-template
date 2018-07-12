@@ -25,7 +25,7 @@ output "git_url" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| region | IBM region | string | `eu` | no |
+| region | heroku region | string | `eu` | no |
 | project_directory | Path tp project directory | string | - | yes |
 | application_name | Application name | string | - | yes |
 | stack | Application stack | string | "heroku-16" | no |
